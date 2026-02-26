@@ -5,13 +5,19 @@ const User = require('../models/User');
 exports.protect = async (req, res, next) => {
     let token;
 
+    // Check cookies first
     if (req.cookies.token) {
         token = req.cookies.token;
+    }
+    
+    // Check Authorization header as fallback
+    if (!token && req.headers.authorization && req.headers.authorization.startsWith('Bearer ')) {
+        token = req.headers.authorization.split(' ')[1];
     }
 
     // Make sure token exists
     if (!token) {
-        console.warn('Auth Middleware: No token found in cookies');
+        console.warn('Auth Middleware: No token found in cookies or Authorization header');
         return res.status(401).json({ success: false, message: 'Not authorized to access this route' });
     }
 
