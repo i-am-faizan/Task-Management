@@ -20,7 +20,12 @@ const PORT = process.env.PORT || 5000;
 
 // Security & Standard Middlewares
 app.use(helmet()); // Security headers
-app.use(cors({ origin: process.env.CORS_ORIGIN, credentials: true })); // Enable CORS
+app.use(cors({ 
+    origin: process.env.CORS_ORIGIN, 
+    credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization']
+})); // Enable CORS
 app.use(morgan('dev')); // Logging
 app.use(express.json()); // Parse JSON bodies
 app.use(cookieParser()); // Parse Cookies
